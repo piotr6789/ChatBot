@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ChatBot.Common\ChatBot.Common.csproj" />
     <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
-    <ProjectReference Include="..\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj" />
     <ProjectReference Include="..\ChatBot.Persistence\ChatBot.Persistence.csproj" />
   </ItemGroup>
 
