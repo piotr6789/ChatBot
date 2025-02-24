@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Application\\ChatBot.Application.csproj",
+      "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Application\\ChatBot.Application.csproj",
       "projectName": "ChatBot.Application",
-      "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Application\\ChatBot.Application.csproj",
+      "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Application\\ChatBot.Application.csproj",
       "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Application\\obj\\",
+      "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

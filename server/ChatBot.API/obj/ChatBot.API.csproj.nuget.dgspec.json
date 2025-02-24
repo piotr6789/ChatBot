@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.API\\ChatBot.API.csproj": {}
+    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.API\\ChatBot.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.API\\ChatBot.API.csproj": {
+    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.API\\ChatBot.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.API\\ChatBot.API.csproj",
+        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.API\\ChatBot.API.csproj",
         "projectName": "ChatBot.API",
-        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.API\\ChatBot.API.csproj",
+        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.API\\ChatBot.API.csproj",
         "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.API\\obj\\",
+        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj": {
-                "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj"
+              "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj": {
+                "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj"
               }
             }
           }
@@ -54,6 +54,12 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
               "version": "[7.2.0, )"
@@ -90,14 +96,14 @@
         }
       }
     },
-    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\ChatBot.Domain.csproj": {
+    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\ChatBot.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\ChatBot.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\ChatBot.Domain.csproj",
         "projectName": "ChatBot.Domain",
-        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\ChatBot.Domain.csproj",
+        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\ChatBot.Domain.csproj",
         "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\obj\\",
+        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -155,14 +161,14 @@
         }
       }
     },
-    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj": {
+    "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
+        "projectUniqueName": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
         "projectName": "ChatBot.Persistence",
-        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
+        "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
         "packagesPath": "C:\\Users\\piotr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\obj\\",
+        "outputPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -184,8 +190,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\ChatBot.Domain.csproj": {
-                "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Domain\\ChatBot.Domain.csproj"
+              "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\ChatBot.Domain.csproj": {
+                "projectPath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Domain\\ChatBot.Domain.csproj"
               }
             }
           }

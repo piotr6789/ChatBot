@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "01E3CvraccM=",
+  "dgSpecHash": "BvErZ/HMAzQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
+  "projectFilePath": "C:\\Users\\piotr\\Documents\\zadanie rekrutacyjne\\chatbot\\server\\ChatBot.Persistence\\ChatBot.Persistence.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\piotr\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\piotr\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

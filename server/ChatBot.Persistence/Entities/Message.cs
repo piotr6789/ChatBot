@@ -10,6 +10,6 @@ namespace ChatBot.Persistence.Entities
         public SenderType Sender { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public MessageRating Rating { get; set; }
+        public MessageRating? Rating { get; set; }
     }
 }

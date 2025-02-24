@@ -23,7 +23,6 @@ namespace ChatBot.Persistence.Configurations
                    .IsRequired();
 
             builder.Property(m => m.Rating)
-                   .HasConversion<int>()
                    .IsRequired(false);
         }
     }

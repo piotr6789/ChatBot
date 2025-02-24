@@ -1,0 +1,12 @@
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\bin\Debug\net8.0\ChatBot.Domain.deps.json
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\bin\Debug\net8.0\ChatBot.Domain.dll
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\bin\Debug\net8.0\ChatBot.Domain.pdb
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.AssemblyInfoInputs.cache
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.AssemblyInfo.cs
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.csproj.CoreCompileInputs.cache
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.sourcelink.json
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.dll
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\refint\ChatBot.Domain.dll
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ChatBot.Domain.pdb
+C:\Users\piotr\Documents\zadanie rekrutacyjne\chatbot\server\ChatBot.Domain\obj\Debug\net8.0\ref\ChatBot.Domain.dll

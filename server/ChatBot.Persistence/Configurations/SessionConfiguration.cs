@@ -4,11 +4,11 @@ using ChatBot.Persistence.Entities;
 
 namespace ChatBot.Persistence.Configurations
 {
-    public class ConversationConfiguration : IEntityTypeConfiguration<Session>
+    public class SessionConfiguration : IEntityTypeConfiguration<Session>
     {
         public void Configure(EntityTypeBuilder<Session> builder)
         {
-            builder.ToTable("Conversations");
+            builder.ToTable("Sessions");
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.CookieId)
