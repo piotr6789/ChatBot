@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ChatBot.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMessageAndSessionEntities : Migration
+    public partial class AddSessionAndMessageEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ namespace ChatBot.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ConversationId = table.Column<int>(type: "int", nullable: false),
+                    SessionId = table.Column<int>(type: "int", nullable: false),
                     Sender = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
@@ -42,17 +42,17 @@ namespace ChatBot.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Sessions_ConversationId",
-                        column: x => x.ConversationId,
+                        name: "FK_Messages_Sessions_SessionId",
+                        column: x => x.SessionId,
                         principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ConversationId",
+                name: "IX_Messages_SessionId",
                 table: "Messages",
-                column: "ConversationId");
+                column: "SessionId");
         }
 
         /// <inheritdoc />

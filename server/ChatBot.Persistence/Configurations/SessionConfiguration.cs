@@ -25,7 +25,7 @@ namespace ChatBot.Persistence.Configurations
 
             builder.HasMany(c => c.Messages)
                    .WithOne(m => m.Session)
-                   .HasForeignKey(m => m.ConversationId);
+                   .HasForeignKey(m => m.SessionId);
         }
     }
 }
