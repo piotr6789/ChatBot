@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatBot.Persistence.Migrations
 {
     [DbContext(typeof(ChatBotDbContext))]
-    [Migration("20250224082649_AddMessageAndSessionEntities")]
-    partial class AddMessageAndSessionEntities
+    [Migration("20250224105542_AddSessionAndMessageEntities")]
+    partial class AddSessionAndMessageEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,6 @@ namespace ChatBot.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ConversationId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -51,9 +48,12 @@ namespace ChatBot.Persistence.Migrations
                     b.Property<int>("Sender")
                         .HasColumnType("int");
 
+                    b.Property<int>("SessionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ConversationId");
+                    b.HasIndex("SessionId");
 
                     b.ToTable("Messages", (string)null);
                 });
@@ -90,7 +90,7 @@ namespace ChatBot.Persistence.Migrations
                 {
                     b.HasOne("ChatBot.Persistence.Entities.Session", "Session")
                         .WithMany("Messages")
-                        .HasForeignKey("ConversationId")
+                        .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
