@@ -61,6 +61,8 @@ namespace ChatBot.API.Hubs
             await _messageRepository.AddMessageAsync(userMessage);
             await _messageRepository.SaveChangesAsync();
 
+            await Clients.Caller.SendAsync("ReceiveMessage", "User", message, userMessage.Id);
+
             var random = new Random();
             var response = _responses[random.Next(_responses.Length)];
 
@@ -68,8 +70,8 @@ namespace ChatBot.API.Hubs
             {
                 if (cts.Token.IsCancellationRequested)
                 {
-                    await SaveBotResponse(session, responseBuilder.ToString());
-                    await Clients.Caller.SendAsync("ReceiveMessage", "ChatBot", responseBuilder.ToString());
+                    var partialBotMessageId = await SaveBotResponse(session, responseBuilder.ToString());
+                    await Clients.Caller.SendAsync("ReceiveMessage", "ChatBot", responseBuilder.ToString(), partialBotMessageId);
                     _activeTasks.TryRemove(connectionId, out _);
                     return;
                 }
@@ -79,8 +81,8 @@ namespace ChatBot.API.Hubs
                 await Task.Delay(50, cts.Token);
             }
 
-            await SaveBotResponse(session, response);
-            await Clients.Caller.SendAsync("ReceiveMessage", "ChatBot", response);
+            var botMessageId = await SaveBotResponse(session, response);
+            await Clients.Caller.SendAsync("ReceiveMessage", "ChatBot", response, botMessageId);
 
             _activeTasks.TryRemove(connectionId, out _);
         }
@@ -95,10 +97,10 @@ namespace ChatBot.API.Hubs
             }
         }
 
-        private async Task SaveBotResponse(Session session, string responseContent)
+        private async Task<int> SaveBotResponse(Session session, string responseContent)
         {
             if (string.IsNullOrWhiteSpace(responseContent))
-                return;
+                return 0;
 
             var botMessage = new Message
             {
@@ -110,6 +112,9 @@ namespace ChatBot.API.Hubs
 
             await _messageRepository.AddMessageAsync(botMessage);
             await _messageRepository.SaveChangesAsync();
+
+            return botMessage.Id;
         }
+
     }
 }

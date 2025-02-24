@@ -1,0 +1,18 @@
+<mat-card class="chat-container">
+    <mat-card-content class="chat-messages">
+      <mat-list>
+        <mat-list-item *ngFor="let msg of messages">
+          <strong>{{ msg.sender }}:</strong> {{ msg.content }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  
+    <mat-card-actions class="chat-actions">
+      <mat-form-field class="chat-input">
+        <input matInput [(ngModel)]="message" placeholder="Write message...">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+      <button mat-raised-button color="warn" (click)="cancelMessage()">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+  

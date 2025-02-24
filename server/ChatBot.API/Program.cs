@@ -41,6 +41,13 @@ namespace ChatBot.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddOpenApiDocument(config =>
+            {
+                config.DocumentName = "v1";
+                config.Title = "ChatBot API";
+                config.Version = "v1";
+            });
+
             builder.Services.AddAuthorization();
             builder.Services.AddControllers();
 
@@ -56,6 +63,8 @@ namespace ChatBot.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
+
+                app.UseOpenApi();
                 app.UseSwaggerUI();
             }
 
