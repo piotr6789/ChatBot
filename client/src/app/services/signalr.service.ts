@@ -24,7 +24,7 @@ export class SignalRService {
             console.log('SignalR connected successfully');
         } catch (err) {
             console.error('SignalR connection error:', err);
-            setTimeout(() => this.startConnection(), 3000); // 🔄 Ponowna próba po 3 sekundach
+            setTimeout(() => this.startConnection(), 3000);
         }
 
         this.hubConnection.onclose(() => {
