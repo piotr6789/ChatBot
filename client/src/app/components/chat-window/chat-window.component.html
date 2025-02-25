@@ -1,0 +1,30 @@
+<mat-card class="chat-container">
+  <mat-card-content class="chat-messages">
+    <mat-list>
+      <mat-list-item *ngFor="let msg of messages">
+        <div class="message-wrapper">
+          <div class="message-content" [ngClass]="{'user': msg.sender === 'User', 'bot': msg.sender === 'ChatBot'}">
+            <strong>{{ msg.sender }}:</strong> {{ msg.content }}
+          </div>
+
+          <div class="message-actions">
+            <button class="like-btn" 
+                    [ngClass]="{'active': msg.rating === 1}" 
+                    (click)="rateMessage(msg.messageId, 1)">👍</button>
+            <button class="unlike-btn" 
+                    [ngClass]="{'active': msg.rating === 0}" 
+                    (click)="rateMessage(msg.messageId, 0)">👎</button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+
+  <mat-card-actions class="chat-actions">
+    <mat-form-field class="chat-input">
+      <input matInput [(ngModel)]="message" placeholder="Write message...">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+    <button mat-raised-button color="warn" (click)="cancelMessage()">Cancel</button>
+  </mat-card-actions>
+</mat-card>

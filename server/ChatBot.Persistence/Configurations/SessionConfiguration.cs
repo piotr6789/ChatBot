@@ -4,14 +4,14 @@ using ChatBot.Persistence.Entities;
 
 namespace ChatBot.Persistence.Configurations
 {
-    public class ConversationConfiguration : IEntityTypeConfiguration<Session>
+    public class SessionConfiguration : IEntityTypeConfiguration<Session>
     {
         public void Configure(EntityTypeBuilder<Session> builder)
         {
-            builder.ToTable("Conversations");
+            builder.ToTable("Sessions");
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.CookieId)
+            builder.Property(c => c.ClientSessionId)
                    .IsRequired()
                    .HasMaxLength(100);
 
@@ -25,7 +25,7 @@ namespace ChatBot.Persistence.Configurations
 
             builder.HasMany(c => c.Messages)
                    .WithOne(m => m.Session)
-                   .HasForeignKey(m => m.ConversationId);
+                   .HasForeignKey(m => m.SessionId);
         }
     }
 }
