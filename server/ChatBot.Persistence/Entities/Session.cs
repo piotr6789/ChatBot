@@ -3,7 +3,7 @@
     public class Session
     {
         public int Id { get; set; }
-        public string CookieId { get; set; }
+        public Guid ClientSessionId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastActivityAt { get; set; }
 

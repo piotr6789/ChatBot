@@ -11,7 +11,7 @@ namespace ChatBot.Persistence.Configurations
             builder.ToTable("Sessions");
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.CookieId)
+            builder.Property(c => c.ClientSessionId)
                    .IsRequired()
                    .HasMaxLength(100);
 

@@ -19,15 +19,21 @@ export class Client {
     }
 
     /**
+     * @param clientSessionId (optional) 
      * @return OK
      */
-    history(): Promise<void> {
-        let url_ = this.baseUrl + "/api/Chat/history";
+    history(clientSessionId: string | undefined): Promise<SessionDto> {
+        let url_ = this.baseUrl + "/api/Chat/history?";
+        if (clientSessionId === null)
+            throw new Error("The parameter 'clientSessionId' cannot be null.");
+        else if (clientSessionId !== undefined)
+            url_ += "clientSessionId=" + encodeURIComponent("" + clientSessionId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
             method: "GET",
             headers: {
+                "Accept": "text/plain"
             }
         };
 
@@ -36,57 +42,22 @@ export class Client {
         });
     }
 
-    protected processHistory(response: Response): Promise<void> {
+    protected processHistory(response: Response): Promise<SessionDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SessionDto.fromJS(resultData200);
+            return result200;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return OK
-     */
-    message(body: CreateMessageDto | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/Chat/message";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processMessage(_response);
-        });
-    }
-
-    protected processMessage(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<SessionDto>(null as any);
     }
 
     /**
@@ -164,10 +135,15 @@ export class Client {
     }
 }
 
-export class CreateMessageDto implements ICreateMessageDto {
+export class MessageDto implements IMessageDto {
+    id?: number;
     content?: string | undefined;
+    sender?: SenderType;
+    createdAt?: Date;
+    rating?: string | undefined;
+    sessionId?: string | undefined;
 
-    constructor(data?: ICreateMessageDto) {
+    constructor(data?: IMessageDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -178,26 +154,41 @@ export class CreateMessageDto implements ICreateMessageDto {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.content = _data["content"];
+            this.sender = _data["sender"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.rating = _data["rating"];
+            this.sessionId = _data["sessionId"];
         }
     }
 
-    static fromJS(data: any): CreateMessageDto {
+    static fromJS(data: any): MessageDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateMessageDto();
+        let result = new MessageDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["content"] = this.content;
+        data["sender"] = this.sender;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["rating"] = this.rating;
+        data["sessionId"] = this.sessionId;
         return data;
     }
 }
 
-export interface ICreateMessageDto {
+export interface IMessageDto {
+    id?: number;
     content?: string | undefined;
+    sender?: SenderType;
+    createdAt?: Date;
+    rating?: string | undefined;
+    sessionId?: string | undefined;
 }
 
 export enum MessageRating {
@@ -243,6 +234,71 @@ export class RateMessageDto implements IRateMessageDto {
 export interface IRateMessageDto {
     messageId?: number;
     rating?: MessageRating;
+}
+
+export enum SenderType {
+    _0 = 0,
+    _1 = 1,
+}
+
+export class SessionDto implements ISessionDto {
+    id?: number;
+    clientSessionId?: string;
+    createdAt?: Date;
+    lastActivityAt?: Date;
+    messages?: MessageDto[] | undefined;
+
+    constructor(data?: ISessionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.clientSessionId = _data["clientSessionId"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.lastActivityAt = _data["lastActivityAt"] ? new Date(_data["lastActivityAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["messages"])) {
+                this.messages = [] as any;
+                for (let item of _data["messages"])
+                    this.messages!.push(MessageDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SessionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SessionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["clientSessionId"] = this.clientSessionId;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["lastActivityAt"] = this.lastActivityAt ? this.lastActivityAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.messages)) {
+            data["messages"] = [];
+            for (let item of this.messages)
+                data["messages"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface ISessionDto {
+    id?: number;
+    clientSessionId?: string;
+    createdAt?: Date;
+    lastActivityAt?: Date;
+    messages?: MessageDto[] | undefined;
 }
 
 export class ApiException extends Error {

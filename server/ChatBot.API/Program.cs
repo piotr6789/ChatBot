@@ -2,8 +2,8 @@ using ChatBot.Persistence.Context;
 using ChatBot.Persistence.Repositories;
 using ChatBot.API.Hubs;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using ChatBot.Infrastructure.Services;
+using ChatBot.Application.Messages.Queries;
 
 namespace ChatBot.API
 {
@@ -12,6 +12,10 @@ namespace ChatBot.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
 
             var connectionString = builder.Configuration.GetConnectionString("ChatBotDb");
 
@@ -22,10 +26,11 @@ namespace ChatBot.API
 
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IResponseRepository, ResponseRepository>();
 
             builder.Services.AddScoped<IChatService, ChatService>();
 
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetChatHistoryQuery).Assembly));
 
             builder.Services.AddCors(options =>
             {
@@ -57,6 +62,7 @@ namespace ChatBot.API
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ChatBotDbContext>();
                 dbContext.Database.Migrate();
+                dbContext.EnsureDatabaseSeeded();
             }
 
             if (app.Environment.IsDevelopment())

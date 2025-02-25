@@ -5,6 +5,7 @@ using ChatBot.Application.Messages.Queries;
 using ChatBot.API.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using ChatBot.Common.DTOs;
+using ChatBot.Infrastructure.Services;
 
 namespace ChatBot.API.Controllers
 {
@@ -14,64 +15,95 @@ namespace ChatBot.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IHubContext<ChatHub> _chatHub;
+        private readonly IChatService _chatService;
+        private readonly ILogger<ChatController> _logger;
 
-        public ChatController(IMediator mediator, IHubContext<ChatHub> chatHub)
+        public ChatController(
+            IMediator mediator,
+            IHubContext<ChatHub> chatHub,
+            IChatService chatService,
+            ILogger<ChatController> logger)
         {
             _mediator = mediator;
             _chatHub = chatHub;
+            _chatService = chatService;
+            _logger = logger;
         }
 
         [HttpGet("history")]
-        public async Task<IActionResult> GetChatHistory()
+        public async Task<ActionResult<SessionDto>> GetChatHistory([FromQuery] Guid clientSessionId)
         {
-            var cookieId = Request.Cookies["ChatSessionId"];
-            if (string.IsNullOrEmpty(cookieId))
-                return BadRequest("Brak cookieId, sesja nieznaleziona.");
-
-            var query = new GetChatHistoryQuery { CookieId = cookieId };
-            var session = await _mediator.Send(query);
-
-            return Ok(session);
-        }
-
-        [HttpPost("message")]
-        public async Task<IActionResult> SendMessage([FromBody] CreateMessageDto dto)
-        {
-            var cookieId = Request.Cookies["ChatSessionId"];
-
-            if (string.IsNullOrEmpty(cookieId))
+            try
             {
-                cookieId = Guid.NewGuid().ToString();
-                Response.Cookies.Append("ChatSessionId", cookieId);
+                if (clientSessionId == Guid.Empty)
+                {
+                    _logger.LogInformation("No session ID provided. Creating a new session.");
+                    clientSessionId = Guid.NewGuid();
+                    await _chatService.CreateSessionAsync(clientSessionId);
+                }
+
+                var query = new GetChatHistoryQuery { ClientSessionId = clientSessionId };
+                var sessionData = await _mediator.Send(query);
+
+                if (sessionData == null)
+                {
+                    _logger.LogWarning("No chat history found for session ID: {ClientSessionId}", clientSessionId);
+                    return NotFound($"Chat history not found for session ID: {clientSessionId}");
+                }
+
+                return Ok(sessionData);
             }
-
-            var command = new CreateMessageCommand { Content = dto.Content, CookieId = cookieId };
-            var message = await _mediator.Send(command);
-
-            await _chatHub.Clients.All.SendAsync("ReceiveMessage", "User", dto.Content);
-            await _chatHub.Clients.All.SendAsync("SendMessage", cookieId, dto.Content);
-
-            return Ok(message);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving chat history for session ID: {ClientSessionId}", clientSessionId);
+                return StatusCode(500, "An internal error occurred while retrieving chat history.");
+            }
         }
 
         [HttpPut("message/{messageId}/rate")]
         public async Task<IActionResult> RateMessage(int messageId, [FromBody] RateMessageDto dto)
         {
-            var command = new RateMessageCommand
+            try
             {
-                MessageId = messageId,
-                Rating = dto.Rating
-            };
-            await _mediator.Send(command);
+                if (dto == null)
+                {
+                    _logger.LogWarning("Invalid request. RateMessageDto is null for message ID: {MessageId}", messageId);
+                    return BadRequest("Invalid request data.");
+                }
 
-            return NoContent();
+                var command = new RateMessageCommand
+                {
+                    MessageId = messageId,
+                    Rating = dto.Rating
+                };
+
+                await _mediator.Send(command);
+                _logger.LogInformation("Successfully rated message ID: {MessageId}", messageId);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error rating message ID: {MessageId}", messageId);
+                return StatusCode(500, "An internal error occurred while rating the message.");
+            }
         }
 
         [HttpPut("message/cancel")]
         public async Task<IActionResult> CancelMessage()
         {
-            await _chatHub.Clients.All.SendAsync("CancelMessage");
-            return NoContent();
+            try
+            {
+                _logger.LogInformation("Sending cancel message event to all clients.");
+                await _chatHub.Clients.All.SendAsync("CancelMessage");
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending cancel message event.");
+                return StatusCode(500, "An internal error occurred while canceling the message.");
+            }
         }
     }
 }

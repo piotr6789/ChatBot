@@ -1,45 +1,132 @@
 .chat-container {
-    width: 400px;
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #1e1e1e;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    max-height: 400px;
-    padding: 8px;
-    background-color: #2a2a2a;
-    border-radius: 4px;
-  }
-  
-  .chat-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .chat-input {
-    flex: 1;
-  }
-  
-  button {
-    min-width: 80px;
-    background-color: #6200ea;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #3700b3;
-  }
-  
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #1e1e1e;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  padding: 8px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.message-content {
+  padding: 8px;
+  border-radius: 6px;
+  color: white;
+  max-width: 80%;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.user {
+  align-self: flex-end;
+}
+
+.bot {
+  align-self: flex-start;
+}
+
+.message-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.like-btn, .unlike-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.1s ease-in-out;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-btn:hover, .unlike-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.like-btn.active {
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.unlike-btn.active {
+  background: #f44336;
+  color: white;
+  border-color: #f44336;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+}
+
+button {
+  min-width: 80px;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #3700b3;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #6200ea;
+  border-radius: 3px;
+}
+
+::ng-deep .mdc-list-item.mdc-list-item--with-one-line {
+  height: auto !important;
+  min-height: unset !important;
+}

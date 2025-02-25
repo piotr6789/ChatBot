@@ -9,80 +9,130 @@ namespace ChatBot.Infrastructure.Services
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IMessageRepository _messageRepository;
+        private readonly IResponseRepository _responseRepository;
 
-        public ChatService(ISessionRepository sessionRepository, IMessageRepository messageRepository)
+        public ChatService(
+            ISessionRepository sessionRepository,
+            IMessageRepository messageRepository,
+            IResponseRepository responseRepository)
         {
             _sessionRepository = sessionRepository;
             _messageRepository = messageRepository;
+            _responseRepository = responseRepository;
         }
 
-        public async Task<SessionDto> GetChatHistoryAsync(string cookieId)
+        public async Task<SessionDto?> GetChatHistoryAsync(Guid clientSessionId)
         {
-            var session = await _sessionRepository.GetSessionByCookieIdAsync(cookieId);
-
+            var session = await _sessionRepository.GetSessionByClientSessionIdAsync(clientSessionId);
             if (session == null) return null;
 
             return new SessionDto
             {
                 Id = session.Id,
-                CookieId = session.CookieId,
+                ClientSessionId = session.ClientSessionId,
                 CreatedAt = session.CreatedAt,
                 LastActivityAt = session.LastActivityAt,
                 Messages = session.Messages.Select(m => new MessageDto
                 {
                     Id = m.Id,
                     Content = m.Content,
-                    Sender = m.Sender.ToString(),
+                    Sender = m.Sender,
                     CreatedAt = m.CreatedAt,
                     Rating = m.Rating?.ToString()
                 }).ToList()
             };
         }
 
-        public async Task<MessageDto> SendMessageAsync(string content, string cookieId)
+        public async Task<Session> GetOrCreateSessionAsync(Guid clientSessionId)
         {
-            var session = await _sessionRepository.GetSessionByCookieIdAsync(cookieId);
+            var session = await _sessionRepository.GetSessionByClientSessionIdAsync(clientSessionId);
+            if (session != null) return session;
 
-            if (session == null)
+            session = new Session
             {
-                session = new Session
-                {
-                    CookieId = cookieId,
-                    CreatedAt = DateTime.UtcNow,
-                    LastActivityAt = DateTime.UtcNow
-                };
-                await _sessionRepository.CreateSessionAsync(session);
-            }
+                ClientSessionId = clientSessionId,
+                CreatedAt = DateTime.UtcNow,
+                LastActivityAt = DateTime.UtcNow
+            };
 
-            var message = new Message
+            await _sessionRepository.CreateSessionAsync(session);
+            await _sessionRepository.SaveChangesAsync();
+
+            return session;
+        }
+
+        public async Task<Message> SaveUserMessageAsync(Session session, string message)
+        {
+            var userMessage = new Message
             {
                 Session = session,
                 Sender = SenderType.User,
-                Content = content,
+                Content = message,
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _messageRepository.AddMessageAsync(message);
+            await _messageRepository.AddMessageAsync(userMessage);
             await _messageRepository.SaveChangesAsync();
+            return userMessage;
+        }
 
-            return new MessageDto
+        public async Task<string> GetRandomResponseAsync()
+        {
+            var responses = await _responseRepository.GetAllResponsesAsync();
+            if (responses == null || !responses.Any()) return "I'm currently unable to respond.";
+
+            var random = new Random();
+            return responses[random.Next(responses.Count)].Content;
+        }
+
+        public async Task<Message> SaveBotMessageAsync(Session session, string response)
+        {
+            var botMessage = new Message
             {
-                Id = message.Id,
-                Content = message.Content,
-                Sender = message.Sender.ToString(),
-                CreatedAt = message.CreatedAt
+                Session = session,
+                Sender = SenderType.Bot,
+                Content = response,
+                CreatedAt = DateTime.UtcNow
             };
+
+            await _messageRepository.AddMessageAsync(botMessage);
+            await _messageRepository.SaveChangesAsync();
+            return botMessage;
         }
 
         public async Task RateMessageAsync(int messageId, MessageRating rating)
         {
             var message = await _messageRepository.GetMessageByIdAsync(messageId);
             if (message == null)
-                throw new Exception($"Messaig with ID: {messageId} does not exist.");
+                throw new Exception($"Message with ID: {messageId} does not exist.");
 
             message.Rating = rating;
-
             await _messageRepository.SaveChangesAsync();
+        }
+
+        public async Task<Session> GetSessionByClientSessionIdAsync(Guid clientSessionId)
+        {
+            return await _sessionRepository.GetSessionByClientSessionIdAsync(clientSessionId);
+        }
+
+        public async Task<Session> CreateSessionAsync(Guid clientSessionId)
+        {
+            var session = new Session
+            {
+                ClientSessionId = clientSessionId,
+                CreatedAt = DateTime.UtcNow,
+                LastActivityAt = DateTime.UtcNow
+            };
+
+            await _sessionRepository.CreateSessionAsync(session);
+            await _sessionRepository.SaveChangesAsync();
+
+            return session;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _sessionRepository.SaveChangesAsync();
         }
     }
 }
