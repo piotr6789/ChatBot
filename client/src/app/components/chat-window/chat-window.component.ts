@@ -35,7 +35,6 @@ export class ChatWindowComponent implements OnInit {
     this.scrollToBottom();
   }
 
-  // 📌 Registers SignalR event handlers
   private registerSignalREvents(): void {
     const hub = this.signalRService.hubConnection;
     hub.on("ReceiveMessage", this.handleReceiveMessage.bind(this));
@@ -82,7 +81,6 @@ export class ChatWindowComponent implements OnInit {
     document.querySelector('.chat-messages')?.scrollTo({ top: 99999, behavior: "smooth" });
   }
 
-  // 📌 Loads chat history from the API
   loadChatHistory(): void {
     this.apiClient.history(this.getSessionId())
       .then(data => {
@@ -96,10 +94,9 @@ export class ChatWindowComponent implements OnInit {
           rating: msg.rating === "Like" ? 1 : msg.rating === "Unlike" ? 0 : undefined
         })) || [];
       })
-      .catch(error => console.error('❌ Error loading chat history:', error));
+      .catch(error => console.error('Error loading chat history:', error));
   }
 
-  // 📌 Sends a message
   sendMessage(): void {
     if (!this.message.trim() || this.isSending) return;
 
@@ -109,11 +106,10 @@ export class ChatWindowComponent implements OnInit {
 
     this.isSending = true;
     this.signalRService.sendMessage(this.getSessionId(), messageToSend)
-      .catch(err => console.error("❌ Error sending message:", err))
+      .catch(err => console.error("Error sending message:", err))
       .finally(() => this.isSending = false);
   }
 
-  // 📌 Rates a message
   rateMessage(messageId?: number, rating?: number): void {
     if (messageId === undefined || rating === undefined) return;
 
@@ -129,7 +125,6 @@ export class ChatWindowComponent implements OnInit {
       .catch(error => console.error('❌ Error rating message:', error));
   }
 
-  // 📌 Cancels an ongoing message
   async cancelMessage(): Promise<void> {
     try {
       await this.signalRService.cancelMessage(this.getSessionId());
@@ -140,31 +135,28 @@ export class ChatWindowComponent implements OnInit {
       this.removeSignalREventListeners();
       await this.restartSignalRConnection();
     } catch (err) {
-      console.error("❌ Error canceling message:", err);
+      console.error("Error canceling message:", err);
     }
   }
 
-  // 📌 Removes all SignalR event listeners before restarting
   private removeSignalREventListeners(): void {
     const hub = this.signalRService.hubConnection;
     ["ReceiveMessageChunk", "ReceiveMessage", "MessageSentConfirmation", "UpdateMessageId"].forEach(event => hub.off(event));
   }
 
-  // 📌 Restarts SignalR connection
   private async restartSignalRConnection(): Promise<void> {
     try {
       await this.signalRService.hubConnection.stop();
-      console.log("🔄 SignalR connection stopped. Restarting...");
+      console.log("SignalR connection stopped. Restarting...");
       
       await this.signalRService.startConnection();
       this.registerSignalREvents();
-      console.log("✅ SignalR connection restored.");
+      console.log("SignalR connection restored.");
     } catch (err) {
-      console.error("❌ Error restarting SignalR:", err);
+      console.error("Error restarting SignalR:", err);
     }
   }
 
-  // 📌 Increments the last message ID to prevent duplicates
   private incrementLastMessageId(): void {
     if (this.messages.length > 0) {
       const lastMessage = this.messages[this.messages.length - 1];
