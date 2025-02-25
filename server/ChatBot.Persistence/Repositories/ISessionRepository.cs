@@ -4,7 +4,7 @@ namespace ChatBot.Persistence.Repositories
 {
     public interface ISessionRepository
     {
-        Task<Session> GetSessionByCookieIdAsync(string cookieId);
+        Task<Session> GetSessionByClientSessionIdAsync(Guid cookieId);
         Task CreateSessionAsync(Session session);
         Task SaveChangesAsync();
     }

@@ -15,7 +15,7 @@ namespace ChatBot.Application.Messages.Queries
 
         public async Task<SessionDto> Handle(GetChatHistoryQuery request, CancellationToken cancellationToken)
         {
-            return await _chatService.GetChatHistoryAsync(request.CookieId);
+            return await _chatService.GetChatHistoryAsync(request.ClientSessionId);
         }
     }
 }

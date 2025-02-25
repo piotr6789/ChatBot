@@ -13,11 +13,11 @@ namespace ChatBot.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<Session> GetSessionByCookieIdAsync(string cookieId)
+        public async Task<Session> GetSessionByClientSessionIdAsync(Guid clientSessionId)
         {
             return await _context.Sessions
                 .Include(s => s.Messages)
-                .FirstOrDefaultAsync(s => s.CookieId == cookieId);
+                .FirstOrDefaultAsync(s => s.ClientSessionId == clientSessionId);
         }
 
         public async Task CreateSessionAsync(Session session)
